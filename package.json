@@ -1,17 +1,35 @@
 {
-  "name": "proxemicsge",
-  "version": "0.0.1",
-  "private": true,
+  "name": "ProximiThingsServer",
+  "version": "1.0.0",
+  "description": "ProximiThings Server is a FIWARE-enabled component that allows IoT systems integrate proxemics interaction.",
   "scripts": {
-    "start": "node ./bin/www"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/faxterol/ProximiThings-Server"
+  },
+  "keywords": [
+    "FIWARE",
+    "API",
+    "Proxemics Interaction",
+    "IoT"
+  ],
+  "author": "Luis Carlos Cárdenas",
+  "bugs": {
+    "url": "https://github.com/faxterol/ProximiThings-Server/issues"
+  },
+  "homepage": "https://github.com/faxterol/ProximiThings-Server/blob/master/README.md",
+  "devDependencies": {
+    "nodemon": "^1.11.0"
   },
   "dependencies": {
-    "body-parser": "~1.17.1",
-    "cookie-parser": "~1.4.3",
-    "debug": "~2.6.3",
-    "express": "~4.15.2",
-    "morgan": "~1.8.1",
-    "pug": "~2.0.0-beta11",
-    "serve-favicon": "~2.4.2"
+    "body-parser": "^1.17.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.3",
+    "express-validator": "^3.2.0",
+    "mongoose": "^4.10.2",
+    "morgan": "^1.8.2"
   }
 }
