@@ -8,6 +8,10 @@ To install ProximiThings Server, you need to install and configure the follow FI
 * [IoT Agent JSON MQTT](https://github.com/telefonicaid/iotagent-json)
 
 
+## API documentation   
+
+You can find ProximiThings Server API REST resources and documentation on https://faxterol.github.io/ProximiThings-Server/. 
+
 ## License
 
 ProximiThings Server is licensed under Affero General Public License (GPL) version 3.
