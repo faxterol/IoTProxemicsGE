@@ -5,21 +5,34 @@ var express = require('express'),
   port = config.ProximiThings.port,
   mongoose = require('mongoose'),
   rule_interaction = require('./api/models/RuleInteraction'),
+  proxemics_action = require('./api/models/ProxemicsAction'),
   bodyParser = require('body-parser'),
   cookieParser = require('cookie-parser'),
-  logger = require('morgan');
+  logger = require('morgan')
+  validator = require('express-validator');
   
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://'+config.mongodb.server+':'+config.mongodb.port+'/'+config.mongodb.database); 
 
-app.use(logger('dev'));
+app.use(logger(config.environment));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(validator({
+ customValidators: {
+    isArray: function(value) {
+        return Array.isArray(value);
+    },
+    equalsArrayElements: function(value,number){
+      return value.length == number;
+    }
+ }
+}));
 
-
-var routes = require('./api/routes/RulesInteractionRoutes');
-routes(app);
+var rules = require('./api/routes/RulesInteractionRoutes');
+var actions = require('./api/routes/ProxemicsActionRoutes');
+rules(app);
+actions(app);
 
 app.use(function(req, res) {
   res.status(404).send({

@@ -8,6 +8,9 @@ To install ProximiThings Server, you need to install and configure the follow FI
 * [IoT Agent JSON MQTT](https://github.com/telefonicaid/iotagent-json)
 
 
+## License
+
+ProximiThings Server is licensed under Affero General Public License (GPL) version 3.
 
 ## Acknowledgments
 

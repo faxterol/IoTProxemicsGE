@@ -1,0 +1,499 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "ProximiThings Server is a FIWARE-enabled component to processing proxemics interaction on Internet of Things environments. ",
+    "version": "1.0.0",
+    "title": "ProximiThings Server",
+    "termsOfService": "",
+    "contact": {
+      "email": "lcardenas@cicese.edu.mx"
+    },
+    "license": {
+      "name": "Affero General Public License (GPL) version 3.",
+      "url": "https://github.com/faxterol/ProximiThings-Server/blob/master/README.md"
+    }
+  },
+  "host": "proximithings-server.dev",
+  "basePath": "/v1",
+  "tags": [
+    {
+      "name": "RulesInteraction",
+      "description": "Operations for RulesInteraction to activate devices"
+    },
+    {
+      "name": "ProxemicsActions",
+      "description": "Actions to execute on devices when RulesInteraction apply or not."
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/rules": {
+      "get": {
+        "tags": [
+          "RulesInteraction"
+        ],
+        "summary": "Get all rules interaction",
+        "description": "Get all rules interaction existing on the system",
+        "operationId": "getRules",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "RulesInteraction"
+        ],
+        "summary": "Add a new set of rules interaction",
+        "description": "Add a new set of rules interaction for two entities using proxemics dimensiones measurements. If rules apply not not, you can execute a proxemics action.",
+        "operationId": "addRules",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "RuleInteraction object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RuleInteraction"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/rules/{RuleId}": {
+      "put": {
+        "tags": [
+          "RulesInteraction"
+        ],
+        "summary": "Update an existing RuleInteraction",
+        "description": "Update a set of rules interaction.",
+        "operationId": "updateRules",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "RuleId",
+            "in": "path",
+            "description": "RuleInteraction id to update",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "RuleInteraction object with parameters to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RuleInteraction"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated OK"
+          },
+          "404": {
+            "description": "RuleInteraction not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "RulesInteraction"
+        ],
+        "summary": "Find a set of RuleInteraction by ID",
+        "description": "Returns a single RuleInteraction",
+        "operationId": "getRulesById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "RuleId",
+            "in": "path",
+            "description": "RuleInteraction id to get",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/RuleInteraction"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "RuleInteraction not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "RulesInteraction"
+        ],
+        "summary": "Deletes a RuleInteraction",
+        "description": "",
+        "operationId": "deleteRule",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "RuleId",
+            "in": "path",
+            "description": "RuleInteraction id to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "RuleInteraction not found"
+          }
+        }
+      }
+    },
+    "/actions": {
+      "get": {
+        "tags": [
+          "ProxemicsActions"
+        ],
+        "summary": "Get all rules interaction",
+        "description": "Get all rules interaction existing on the system",
+        "operationId": "getActions",
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "ProxemicsActions"
+        ],
+        "summary": "Add a new action",
+        "description": "Add a new action to execute on RulesInteraction.",
+        "operationId": "addActions",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "ProxemicsAction object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProxemicsAction"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+    "/actions/{ActionId}": {
+      "put": {
+        "tags": [
+          "ProxemicsActions"
+        ],
+        "summary": "Update an existing ProxemicsAction",
+        "description": "Update an ProxemicsAction",
+        "operationId": "updateAction",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "ActionId",
+            "in": "path",
+            "type": "string",
+            "description": "ProxemicsAction ID",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "ProxemicsAction object with parameters to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProxemicsAction"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated OK"
+          },
+          "404": {
+            "description": "ProxemicsAction not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "ProxemicsActions"
+        ],
+        "summary": "Find a ProxemicsAction by ID",
+        "description": "Returns a single ProxemicsAction",
+        "operationId": "getActionsById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "ActionId",
+            "in": "path",
+            "type": "string",
+            "description": "ProxemicsAction ID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ProxemicsAction"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "RuleInteraction not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "ProxemicsActions"
+        ],
+        "summary": "Delete a ProxemicsAction",
+        "description": "",
+        "operationId": "deleteAction",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "ActionId",
+            "in": "path",
+            "type": "string",
+            "description": "ProxemicsAction ID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "ProxemicsAction not found"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {},
+  "definitions": {
+    "RuleInteraction": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "RuleId generated by database engine (MongoDB)"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of rule interaction on snake_case format"
+        },
+        "description": {
+          "type": "string",
+          "description": "A rapid description of rule interaction"
+        },
+        "entities": {
+          "type": "array",
+          "description": "Must have only two entities rules definitions on array. (on the future, it will be enabled to more entities)",
+          "items": {
+            "properties": {
+              "entity_id": {
+                "type": "string",
+                "description": "The entity id used on Orion Context Broker"
+              },
+              "proxemics_rules": {
+                "type": "object",
+                "description": "Define your proxemics rules to match a proxemics interaction",
+                "properties": {
+                  "zone": {
+                    "type": "string",
+                    "description": "You can use multiple zone interaction for entity. You can set a prefix IN: or OUT: to specify if entity is in or is out of the proxemics zone. Multiple proxemics zone can be set by comma-separated. (Examples 'OUT:INTIMATE,PERSONAL' 'IN:PUBLIC,SOCIAL')"
+                  },
+                  "orientation": {
+                    "type": "string"
+                  },
+                  "movement": {
+                    "type": "string",
+                    "enum": [
+                      "IDLE",
+                      "IN_MOVEMENT"
+                    ]
+                  },
+                  "interaction_phase": {
+                    "type": "string",
+                    "enum": [
+                      "PERSONAL",
+                      "SUBTLE",
+                      "IMPLICIT",
+                      "AMBIENT"
+                    ]
+                  },
+                  "location": {
+                    "type": "string",
+                    "description": "You can use multiple location for entity. Like zone proxemic, you can use the prefix IN and OUT if entity must be in or out location. Location is the entity id on Orion Context Broker."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "commands_rules_apply": {
+          "type": "array",
+          "description": "Array of commands to execute when proxemics rules match with proxemics interaction.",
+          "items": {
+            "properties": {
+              "command": {
+                "type": "string",
+                "description": "Command to execute on proxemics action."
+              },
+              "entity_id": {
+                "type": "string",
+                "description": "The entity id that execute this command. If you have commands with same name, the system will use the command for the entity id."
+              }
+            }
+          }
+        },
+        "commands_rules_not_apply": {
+          "type": "array",
+          "description": "Array of commands to execute when proxemics rules not match with proxemics interaction.",
+          "items": {
+            "properties": {
+              "command": {
+                "type": "string",
+                "description": "Command to execute on proxemics action."
+              },
+              "entity_id": {
+                "type": "string",
+                "description": "The entity id that execute this command. If you have commands with same name, the system will use the command for the entity id."
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "name",
+        "description",
+        "entities"
+      ]
+    },
+    "ProxemicsAction": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ActionId generated by database engine (MongoDB)"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of proxemics_action on snake_case format"
+        },
+        "description": {
+          "type": "string",
+          "description": "A rapid description of proxemics action"
+        },
+        "type_action": {
+          "type": "string",
+          "description": "The action to execute.",
+          "enum": [
+            "mqtt_msg",
+            "http_callback"
+          ]
+        },
+        "action": {
+          "type": "object",
+          "properties": {
+            "publish_message": {
+              "type": "string",
+              "description": "Message to send to device when action is execute using MQTT Protocol."
+            },
+            "url": {
+              "type": "string",
+              "description": "URL to call when action is execute"
+            }
+          }
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "ProximiThings Repository",
+    "url": "https://github.com/faxterol/ProximiThings-Server"
+  }
+}
