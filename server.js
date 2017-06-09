@@ -6,6 +6,8 @@ var express = require('express'),
   mongoose = require('mongoose'),
   rule_interaction = require('./api/models/RuleInteraction'),
   proxemics_action = require('./api/models/ProxemicsAction'),
+  ocb_notification = require('./api/models/OCBNotification'),
+  entity = require('./api/models/Entity'),
   bodyParser = require('body-parser'),
   cookieParser = require('cookie-parser'),
   logger = require('morgan')
@@ -31,8 +33,10 @@ app.use(validator({
 
 var rules = require('./api/routes/RulesInteractionRoutes');
 var actions = require('./api/routes/ProxemicsActionRoutes');
+var ocbnot = require('./api/routes/OrionNotificationsRoutes');
 rules(app);
 actions(app);
+ocbnot(app);
 
 app.use(function(req, res) {
   res.status(404).send({
@@ -57,10 +61,6 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
 });
 
 app.listen(port);
-
-
-console.log('ProximiThings Server RESTful API started on port ' + port);

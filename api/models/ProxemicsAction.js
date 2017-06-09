@@ -3,12 +3,20 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var ActionDataSchema = new Schema({
+    publish_path_custom : {
+        type : String
+    },
+    iotagent_api_key : {
+        type : String
+    },
+    iotagent_device_id : {
+        type : String
+    },
     publish_message : {
         type : String
     },
     url : {
         type : String,
-        
     }
 },{ _id : false });
 

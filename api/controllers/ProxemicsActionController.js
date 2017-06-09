@@ -5,10 +5,10 @@ var mongoose = require('mongoose'),
   ProxemicsAction = mongoose.model('ProxemicsAction');
 
 exports.list_all_actions = function(req, res) {
-  ProxemicsAction.find({}, function(err, rule) {
+  ProxemicsAction.find({}, function(err, action) {
     if (err)
       res.send(err);
-    res.json(rule);
+    res.json(action);
   });
 };
 
@@ -17,10 +17,10 @@ exports.list_all_actions = function(req, res) {
 
 exports.create_an_action = function(req, res) {
   var new_action = new ProxemicsAction(req.body);
-  new_action.save(function(err, rule) {
+  new_action.save(function(err, action) {
     if (err)
       res.send(err);
-    res.json(rule);
+    res.json(action);
   });
 };
 

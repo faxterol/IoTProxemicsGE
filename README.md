@@ -1,5 +1,11 @@
 # ProximiThings Server
-A FIWARE-enabled component for processing proxemics interaction on IoT environments. This component is connected to Orion Context Broker to get raw data from entities. This component is IN DEVELOPMENT
+A FIWARE-enabled component for processing proxemics interaction on Internet of Things environments. This component is connected to Orion Context Broker to get raw data from entities. This component is IN DEVELOPMENT
+
+### Features
+- Create devices on Orion Context Broker
+- Create rules for Proxemics Interaction based on Proxemics Dimensions from Greenberg (inspired in Hall proxemics dimensions from Antropology)
+- Create actions to execute when proxemics interactions rules apply  (or not) 
+- Actions are MQTT messages for devices or HTTP callbacks
 
 ### Prerequisites
 
@@ -11,6 +17,12 @@ To install ProximiThings Server, you need to install and configure the follow FI
 ## API documentation   
 
 You can find ProximiThings Server API REST resources and documentation on https://faxterol.github.io/ProximiThings-Server/. 
+
+### Limitations
+
+- Do you need to update proxemics dimensions on Orion Context Broker on ProxemicsInteraction service
+- It does not have big data analysis
+
 
 ## License
 

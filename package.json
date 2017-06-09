@@ -30,6 +30,7 @@
     "express": "^4.15.3",
     "express-validator": "^3.2.0",
     "mongoose": "^4.10.2",
-    "morgan": "^1.8.2"
+    "morgan": "^1.8.2",
+    "agenda" : "0.9.1"
   }
 }
