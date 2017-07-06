@@ -3,13 +3,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var ActionDataSchema = new Schema({
-    publish_path_custom : {
-        type : String
-    },
-    iotagent_api_key : {
-        type : String
-    },
-    iotagent_device_id : {
+    publish_path: {
         type : String
     },
     publish_message : {
@@ -24,6 +18,10 @@ var ActionDataSchema = new Schema({
 
 //Parent Schema
 var ProxemicsActionSchema = new Schema({
+    identifier : {
+        type: String,
+        required : 'Enter an <human> identifier for action'
+    },
     name: {
         type: String,
         required: 'Enter the name of rules interaction proxemics'

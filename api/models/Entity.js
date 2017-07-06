@@ -19,6 +19,9 @@ var EntitySchema = new Schema({
         type: String,
         required: 'Type of entity. Is the same for OCB'
     },
+    entity_attributes : {
+        type: Schema.Types.Mixed,
+    },
     service_path : {
         type: String,
         lowercase: true,

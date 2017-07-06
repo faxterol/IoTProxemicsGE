@@ -12,7 +12,9 @@ module.exports = function(agenda,mongoose) {
       //Notifications are send inmediately after update OCB. In all cases, only one update has sent by OCB
       var notification = job.attrs.data.ocb_notification.data[0];
 
-
+      console.log("Notificacion: ");
+      console.log(JSON.stringify(notification));
+      
       var promise_entity = Entity.findOne({"entity_id" : notification.id,"entity_type" : notification.type,"service_path" : job.attrs.data.headers.service_path}).exec();
       
       promise_entity = promise_entity.then(function ( entity_query) {
@@ -22,8 +24,8 @@ module.exports = function(agenda,mongoose) {
             "entity_id" : notification.id,
             "entity_type" : notification.type,
             "service_path" : job.attrs.data.headers.service_path,
-            "proxemics_data" : {},
-            "proxemics_data_previous" : {},
+            "proxemics_data" : {"orientation" : {"in_front_of" : [], "in_back_of" : [], "in_left_of" : [], "in_right_of" : [] },"interaction_phase" : []},
+            "proxemics_data_previous" : {"orientation" : {"in_front_of" : [], "in_back_of" : [], "in_left_of" : [], "in_right_of" : [] },"interaction_phase" : []},
             "last_notification" : notification
           });
 
@@ -32,7 +34,8 @@ module.exports = function(agenda,mongoose) {
         else{
           //update entity
           entity_query.proxemics_data_previous = entity_query.proxemics_data;
-          entity_query.proxemics_data = {};
+          entity_query.proxemics_data = {"orientation" : {"in_front_of" : [], "in_back_of" : [], "in_left_of" : [], "in_right_of" : [] },"interaction_phase" : []};
+          entity_query.last_notification = {};
           entity_query.last_notification = notification;
 
           entity_query.markModified('proxemics_data_previous');
@@ -50,7 +53,13 @@ module.exports = function(agenda,mongoose) {
         },function(error){
           console.log('error:', error);
         });
-
+      });
+      
+      promise_entity = promise_entity.then(function(entity) {   
+        agenda.now('process proxemics rules interaction', {'entity': entity});
+        return entity.save(); //return entity every time
+      },function(error){
+        console.log('error:', error);
       });
 
       promise_entity = promise_entity.then(function(entity){
@@ -59,9 +68,7 @@ module.exports = function(agenda,mongoose) {
           notification.processed = true;
           return notification.save();
         })
-        .then(function(notification){
-          return entity;
-        })
+        .then(done)
         .catch(function(error){
           console.log("error on saving notification: "+error);
         });

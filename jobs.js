@@ -2,8 +2,7 @@ var config = require('./config'),
     Agenda    = require('agenda'),
     agenda    = new Agenda(),
     mongoose = require('mongoose'),
-    jobTypes = ["notifications"]
-    notifications = require('./jobs/notifications.js');
+    jobTypes = ["notifications"];
 
 //mongoose.connect('mongodb://'+config.mongodb.server+':'+config.mongodb.port+'/'+config.mongodb.database); 
 agenda.mongo(mongoose.connection.collection('agendaJobs').conn.db,'agendaJobs', function (err) {
@@ -14,7 +13,7 @@ jobTypes.forEach(function(type) {
     require('./jobs/' + type)(agenda, mongoose);
   });
 
-if (jobTypes.length) {
+if (jobTypes.length > 0) {
   agenda.start();
 }
 
@@ -23,7 +22,7 @@ if (jobTypes.length) {
 function graceful() {
   agenda.stop(function() {
     mongoose.disconnect(function(err){
-
+      process.exit(0);
     });
   });
 }

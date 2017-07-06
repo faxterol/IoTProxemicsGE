@@ -26,19 +26,19 @@ exports.create_an_action = function(req, res) {
 
 
 exports.read_an_action = function(req, res) {
-  ProxemicsAction.findById(req.params.ActionId, function(err, rule) {
+  ProxemicsAction.findById(req.params.ActionId, function(err, action) {
     if (err)
       res.send(err);
-    res.json(rule);
+    res.json(action);
   });
 };
 
 
 exports.update_an_action = function(req, res) {
-  RuleInteraction.findOneAndUpdate(req.params.ActionId, req.body, {new: true}, function(err, rule) {
+  ProxemicsAction.findOneAndUpdate(req.params.ActionId, req.body, {new: true}, function(err, action) {
     if (err)
       res.send(err);
-    res.json(rule);
+    res.json(action);
   });
 };
 
@@ -47,8 +47,8 @@ exports.delete_an_action = function(req, res) {
 
 
   ProxemicsAction.remove({
-    _id: req.params.ActopmOd
-  }, function(err, rule) {
+    _id: req.params.ActionId
+  }, function(err, action) {
     if (err)
       res.send(err);
     res.json({ message: 'Action successfully deleted' });

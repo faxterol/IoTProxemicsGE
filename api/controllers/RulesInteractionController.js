@@ -2,6 +2,7 @@
 
 
 var mongoose = require('mongoose'),
+  util = require('util'),
   RuleInteraction = mongoose.model('RuleInteraction');
 
 exports.list_all_rules = function(req, res) {
@@ -16,9 +17,9 @@ exports.list_all_rules = function(req, res) {
 
 
 exports.create_a_rule = function(req, res) {
-  req.checkBody('name', 'Name for Rule Interaction is required').trim().notEmpty();
-  req.checkBody('description', 'A descripción for Rule Interaction is required').trim().notEmpty();
-  req.checkBody('entities', 'entities for Rule Interaction is required').trim().notEmpty();
+  req.checkBody('name', 'Name for Rule Interaction is required').notEmpty();
+  req.checkBody('description', 'A descripción for Rule Interaction is required').notEmpty();
+  req.checkBody('entities', 'entities for Rule Interaction is required').notEmpty();
   req.checkBody('entities', 'entities for Rule Interaction must be an array').isArray();
   req.checkBody('entities', 'entities must have only two elements').equalsArrayElements(2);
   req.checkBody('commands_rules_not_apply', 'commands_rules_apply must be an array').isArray();
@@ -82,6 +83,7 @@ exports.delete_a_rule = function(req, res) {
       if (err){
         var errors = {"errors" : true, "msg" : err}
         res.status(404).send(errors);
+        return ;
       }
       res.json({ message: 'Rule successfully deleted' });
     });

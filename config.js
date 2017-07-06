@@ -12,9 +12,7 @@ var config = {
     },
     orion : {
         server : '127.0.0.1',
-        port : 1026,
-        service: '',
-        servicePath : ''
+        port : 1026
     },
     mqtt : {
         server: '127.0.0.1',
@@ -30,7 +28,11 @@ var config = {
     },
     interaction_processing : [
         "DistanceProcessing",
-        "MovementDistanceProcessing"
+        "LocationProcessing",
+        "MovementDistanceProcessing",
+        "InfraredPerson",
+        "OrientationProcessing",
+        "InteractionPhaseProcessing"
     ]
 };
 
