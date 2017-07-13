@@ -7,10 +7,14 @@ var express = require('express'),
   rule_interaction = require('./api/models/RuleInteraction'),
   proxemics_action = require('./api/models/ProxemicsAction'),
   ocb_notification = require('./api/models/OCBNotification'),
+  ProxemicsDataLog = require('./api/models/ProxemicsDataLog'),
   entity = require('./api/models/Entity'),
   bodyParser = require('body-parser'),
   cookieParser = require('cookie-parser'),
   logger = require('morgan'),
+  path = require('path'),
+  fs = require('fs'),
+  rfs = require('rotating-file-stream'),
   validator = require('express-validator'),
   sv = require('./lib/UnitVectorSum'),
   mqtt = require('mqtt');
@@ -19,10 +23,26 @@ var express = require('express'),
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://'+config.mongodb.server+':'+config.mongodb.port+'/'+config.mongodb.database); 
 
-app.use(logger('combined'));
+var logDirectory = path.join(__dirname, 'log');
+
+// ensure log directory exists
+fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
+
+// create a rotating write stream
+var accessLogStream = rfs('access.log', {
+  interval: '1d', // rotate daily
+  path: logDirectory
+});
+
+app.use(logger('combined', {stream: accessLogStream}));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 app.use(validator({
  customValidators: {
     isArray: function(value) {
@@ -33,6 +53,7 @@ app.use(validator({
     }
  }
 }));
+
 
 var rules = require('./api/routes/RulesInteractionRoutes');
 var actions = require('./api/routes/ProxemicsActionRoutes');
@@ -65,8 +86,8 @@ app.use(function(err, req, res, next) {
 
 app.listen(port);
 
-var mqtt_client  = mqtt.connect('mqtt://fiware.faxterol.com')
+var mqtt_client  = mqtt.connect("mqtt://"+config.mqtt.server+":"+config.mqtt.port,config.mqtt.options);
  
 mqtt_client.on('connect', function () {
   console.log("MQTT Client connected");
-})
+});

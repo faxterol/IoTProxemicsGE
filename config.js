@@ -15,7 +15,7 @@ var config = {
         port : 1026
     },
     mqtt : {
-        server: '127.0.0.1',
+        server: 'fiware.faxterol.com',  
         port: 1883,
         options: {
             keepalive: 0,

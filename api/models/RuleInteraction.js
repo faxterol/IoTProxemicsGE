@@ -4,24 +4,19 @@ var Schema = mongoose.Schema;
 
 var ProxemicsRulesInteraction = new Schema({
     zone : {
-        type : String,
-        required : "Enter the zones available for this rule."
+        type : String
     },
     orientation : {
-        type : String,
-        required : "Enter the available orientation rule."
+        type : String
     },
     movement : {
-        type : String,
-        required : "Enter the available movement rule."
+        type : String
     },
     interaction_phase : {
-        type : String,
-        required : "Enter the available interaction phase rule."
+        type : String
     },
     location : {
-        type : String,
-        required : "Enter the available location rule."
+        type : String
     }
 },{ _id : false });
 

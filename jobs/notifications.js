@@ -1,6 +1,7 @@
 var DistanceProcessing = require('./../lib/proxemics_interaction/DistanceProcessing');
 var mongoose = require('mongoose'),
   Entity = mongoose.model('Entity'),
+  ProxemicsDataLog = mongoose.model('ProxemicsDataLog'),
   OCBNotification = mongoose.model('OCBNotification'),
   config = require('./../config');
 
@@ -54,10 +55,17 @@ module.exports = function(agenda,mongoose) {
           console.log('error:', error);
         });
       });
-      
+
       promise_entity = promise_entity.then(function(entity) {   
         agenda.now('process proxemics rules interaction', {'entity': entity});
         return entity.save(); //return entity every time
+      },function(error){
+        console.log('error:', error);
+      });
+      
+      promise_entity = promise_entity.then(function(entity) {   
+        var log  = new ProxemicsDataLog({'entity' : entity._id,'proxemics_data' : entity.proxemics_data});
+        return log.save(); //return entity every time
       },function(error){
         console.log('error:', error);
       });
