@@ -71,6 +71,19 @@ You can find ProximiThings Server API REST resources and documentation on https:
 | DELETE | /v1/entities/{EntityID} | Delete an entity from ProximiThings                                                                |
 | GET    | /v1/proxemics-history   | Show a list of proxemics dimensions measurements in a timelist. |
 
+## Extend functionalities
+
+You can add new features on ProximiThings contribuiting with this repository or to processing proxemics dimensions using custom structures or data.
+
+If you want to extend functionalities, you need to do:
+
+1. Create a file on lib/proxemics_interaction
+2. Put on the new file the content of lib/proxemics_interaction/BlankProxemicsDimensions.js 
+3. Code it your new file.
+4. Add the filename on `interaction_processing` parameter from config.js file in order that you need. 
+⋅⋅* You can delete filenames from `interaction_processing` parameter if you don't need it. 
+5. Restart or run ProximiThings
+
 
 ## Limitations
 
