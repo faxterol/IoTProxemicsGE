@@ -17,7 +17,8 @@ var express = require('express'),
   rfs = require('rotating-file-stream'),
   validator = require('express-validator'),
   sv = require('./lib/UnitVectorSum'),
-  mqtt = require('mqtt');
+  mqtt = require('mqtt'),
+  rp = require("request-promise");
   
   
 mongoose.Promise = global.Promise;

@@ -19,6 +19,7 @@ module.exports = function(agenda,mongoose) {
             //extract all rules
             _.each(rules,function(value){
                 var rule = value;
+                console.log("\n\n\n\n\n\n\n Executing rule: "+rule.name);
                 //get the second entity
                 var related_index = rule.entities[0].entity_id==entity.entity_id?1 : 0;
                 var entity_query = Entity.findOne({'entity_id' : rule.entities[related_index].entity_id});
@@ -35,6 +36,7 @@ module.exports = function(agenda,mongoose) {
                     return {"match" : entity_match && entity_related_match, "entity_related" : entity_related};
                 })
                 .then(function(datos){
+                    console.log("\n\n\n\n\n\n\n RULE: "+rule.name+" MATCH: "+datos.match);
                     if(datos["match"]){
                         for(var x = 0;x<rule.commands_rules_apply.length;x++){
                             var findvars = {'identifier' : rule.commands_rules_apply[x].command};
@@ -53,15 +55,15 @@ module.exports = function(agenda,mongoose) {
                                     MQTTAction(rule,action,entity,datos["entity_related"]);
                                 }
                             }).catch(function(err){
-                                console.log("Error on rules: "+err);
+                                console.log("Error on match rules: "+err);
                             });
                         }
                     }
                     else{
                         for(var x = 0;x<rule.commands_rules_not_apply.length;x++){
-                            var findvars = {'identifier' : rule.commands_rules_apply[x].command};
-                            if(typeof rule.commands_rules_apply[x].entity_id != "undefined"){
-                                findvars['entity_id'] = rule.commands_rules_apply[x].entity_id;
+                            var findvars = {'identifier' : rule.commands_rules_not_apply[x].command};
+                            if(typeof rule.commands_rules_not_apply[x].entity_id != "undefined"){
+                                findvars['entity_id'] = rule.commands_rules_not_apply[x].entity_id;
                             }
                             var actions_query = ProxemicsAction.findOne(findvars).exec().then(function(action){
                                 if(_.toLower(action.type) == "http_callback"){
@@ -72,7 +74,7 @@ module.exports = function(agenda,mongoose) {
                                     MQTTAction(rule,action,entity,datos["entity_related"]);
                                 }
                             }).catch(function(err){
-                                console.log("Error on rules: "+err);
+                                console.log("Error on not rules: "+err);
                             });
                         }
                     }

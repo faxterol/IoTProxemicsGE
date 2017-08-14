@@ -23,12 +23,139 @@
     {
       "name": "ProxemicsActions",
       "description": "Actions to execute on devices when RulesInteraction apply or not."
+    },
+    {
+      "name": "Entities",
+      "description": "Entities using ProximiThings."
+    },
+    {
+      "name": "ProxemicsHistory",
+      "description": "History of ProxemicsInteraction."
     }
   ],
   "schemes": [
     "http"
   ],
   "paths": {
+    "/entities": {
+      "get": {
+        "tags": [
+          "Entities"
+        ],
+        "summary": "Get all entities using ProximiThings",
+        "description": "Get all entities on ProximiThings",
+        "operationId": "getEntities",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Entities"
+        ],
+        "summary": "Create a new entity on ProximiThings",
+        "description": "Create a new Entity on ProximiThings. Use only required parameters.",
+        "operationId": "createEntity",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Entity object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Entity"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/entities/{EntityId}": {
+      "get": {
+        "tags": [
+          "Entities"
+        ],
+        "summary": "Get Entity by EntityId",
+        "description": "Get all information about entity using EntityId",
+        "operationId": "getEntity",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "EntityId",
+            "in": "path",
+            "description": "EntityId from entity on database (_id parameter)",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Entities"
+        ],
+        "summary": "Update entity on ProximiThings",
+        "description": "Update information from entity. Use only required parameters.",
+        "operationId": "updateEntity",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "EntityId",
+            "in": "path",
+            "description": "EntityId from entity on database (_id parameter)",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Entity object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Entity"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/rules": {
       "get": {
         "tags": [
@@ -85,7 +212,7 @@
       }
     },
     "/rules/{RuleId}": {
-      "put": {
+      "post": {
         "tags": [
           "RulesInteraction"
         ],
@@ -245,7 +372,7 @@
       }
     },
     "/actions/{ActionId}": {
-      "put": {
+      "post": {
         "tags": [
           "ProxemicsActions"
         ],
@@ -350,6 +477,45 @@
           }
         }
       }
+    },
+    "/proxemics-history": {
+      "get": {
+        "tags": [
+          "ProxemicsHistory"
+        ],
+        "summary": "Get all proxemics dimensions values",
+        "description": "Get all proxemics dimensions values order by date and time",
+        "operationId": "getProxemicsHistory",
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "EntityId",
+            "in": "query",
+            "type": "string",
+            "description": "ID on Entity"
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "type": "string",
+            "description": "Set a day to get proxemics dimensions value in format YYYY-MM-DD"
+          }  
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type" : "array",
+              "items" : {
+                "$ref": "#/definitions/ProxemicsHistory"
+              }
+            }
+          }
+        }
+      }
     }
   },
   "securityDefinitions": {},
@@ -357,7 +523,7 @@
     "RuleInteraction": {
       "type": "object",
       "properties": {
-        "id": {
+        "_id": {
           "type": "string",
           "description": "RuleId generated by database engine (MongoDB)"
         },
@@ -387,7 +553,8 @@
                     "description": "You can use multiple zone interaction for entity. You can set a prefix IN: or OUT: to specify if entity is in or is out of the proxemics zone. Multiple proxemics zone can be set by comma-separated. (Examples 'OUT:INTIMATE,PERSONAL' 'IN:PUBLIC,SOCIAL')"
                   },
                   "orientation": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Orientation of other entity. example: FRONT_OF:Another_entity|RIGHT_OF:Another_entity. In this example, entity can be on front or right side."
                   },
                   "movement": {
                     "type": "string",
@@ -403,7 +570,8 @@
                       "SUBTLE",
                       "IMPLICIT",
                       "AMBIENT"
-                    ]
+                    ],
+                    "description": "interaction phase with respect to another entity."
                   },
                   "location": {
                     "type": "string",
@@ -456,9 +624,13 @@
     "ProxemicsAction": {
       "type": "object",
       "properties": {
-        "id": {
+        "_id": {
           "type": "string",
           "description": "ActionId generated by database engine (MongoDB)"
+        },
+        "identifier": {
+          "type": "string",
+          "description": "A short name of action in snake_case. This is used on RuleInteraction like command name to execute when proxemics is match."
         },
         "name": {
           "type": "string",
@@ -481,13 +653,163 @@
           "properties": {
             "publish_message": {
               "type": "string",
-              "description": "Message to send to device when action is execute using MQTT Protocol."
+              "description": "Message to send to device when action is execute using MQTT Protocol. When type_action is http_callback, this is the JSON to send to HTTP request."
+            },
+            "publish_path": {
+              "type": "string",
+              "description": "Topic to send mqtt message"
             },
             "url": {
               "type": "string",
               "description": "URL to call when action is execute"
             }
           }
+        }
+      }
+    },
+    "Entity": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "description": "EntityID generated by database engine (MongoDB)"
+        },
+        "name": {
+          "type": "string",
+          "description": "A name for entity."
+        },
+        "entity_id": {
+          "type": "string",
+          "description": "entity_id parameter from Orion Context Broker."
+        },
+        "entity_type": {
+          "type": "string",
+          "description": "entity_type parameter from Orion Context Broker"
+        },
+        "service_path": {
+          "type": "string",
+          "description": "service_path used on Orion Context Broker"
+        },
+        "description": {
+          "type": "string",
+          "description": "A rapid description of proxemics action"
+        },
+        "proxemics_data_previous": {
+          "type": "object",
+          "description": "Same structure of proxemics_data."
+        },
+        "proxemics_data": {
+          "type": "object",
+          "description": "Proxemics Dimensions processed",
+          "properties": {
+            "zone": {
+              "type": "string",
+              "description": "Proxemics Zone processed of the entity",
+              "enum": [
+                "INTIMATE",
+                "PERSONAL",
+                "SOCIAL",
+                "PUBLIC"
+              ]
+            },
+            "distance_cm": {
+              "type": "integer",
+              "description": "Distance processed on centimeters from device"
+            },
+            "movement": {
+              "type": "string",
+              "description": "Movement of entity",
+              "enum": [
+                "IN_MOVEMENT",
+                "IDLE"
+              ]
+            },
+            "orientation": {
+              "type": "object",
+              "description": "Orientation of devices on every direction",
+              "properties": {
+                "in_right_of": {
+                  "type": "array",
+                  "description": "Array of entities (using entity_id) on the right side.",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "in_left_of": {
+                  "type": "array",
+                  "description": "Array of entities (using entity_id) on the left side.",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "in_front_of": {
+                  "type": "array",
+                  "description": "Array of entities (using entity_id) on the front side.",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "in_back_of": {
+                  "type": "array",
+                  "description": "Array of entities (using entity_id) on the back side.",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "orientation_degrees": {
+              "type": "integer",
+              "description": "Degrees of orientation using sexagesimal units. "
+            },
+            "location_id": {
+              "type": "string",
+              "description": "entity_id of location from OCB"
+            },
+            "interaction_phase": {
+              "type": "array",
+              "description": "array of entities with one interaction phase",
+              "items": {
+                "properties": {
+                  "entity_id": {
+                    "type": "string",
+                    "description": "entity_id (from OCB) of entity in this phase."
+                  },
+                  "phase": {
+                    "type": "string",
+                    "description": "Interaction phase of this entity"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "last_notification": {
+          "type": "object",
+          "description": "Last notification received by Orion Context Broker. Object is described in key:value. OCB send this on key and value on parameters name and value from every attribute. (See OCB docs)"
+        }
+      },
+      "required": [
+        "name",
+        "entity_id",
+        "entity_type",
+        "service_path"
+      ]
+    },
+    "ProxemicsHistory": {
+      "type": "object",
+      "properties": {
+        "entity": {
+          "type": "string",
+          "description": "Entity ID"
+        },
+        "date": {
+          "type": "string",
+          "description": "Date and time when proxemics dimensions was measured. "
+        },
+        "proxemics_data": {
+          "type": "string",
+          "description": "Proxemics data like Entity object"
         }
       }
     }
