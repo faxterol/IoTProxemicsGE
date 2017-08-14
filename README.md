@@ -43,11 +43,11 @@ Open your browser and enter to http://localhost:6253 to sure that ProximiThings 
 
 On ProximiThings root folder project, there is a config.js file with some parameters for configuration.
 
-⋅⋅* ProximiThings: In this paremeter, you can configure ProximiThings-related service. 
-⋅⋅*  mongodb: MongoDB connection details
-⋅⋅*  orion: Connection details to Orion Context Broker. This is needle to create entities or send measurement data to OCB
-⋅⋅*  mqtt: MQTT broker connection
-⋅⋅*  interaction_processing: File names of lib/proxemics_interaction files to process proxemic interaction on ProximiThings. The order of processing is given with the order of array position. 0 index is the first file to execute. 
+* ProximiThings: In this paremeter, you can configure ProximiThings-related service. 
+*  mongodb: MongoDB connection details
+*  orion: Connection details to Orion Context Broker. This is needle to create entities or send measurement data to OCB
+*  mqtt: MQTT broker connection
+*  interaction_processing: File names of lib/proxemics_interaction files to process proxemic interaction on ProximiThings. The order of processing is given with the order of array position. 0 index is the first file to execute. 
 
 ## API documentation   
 
