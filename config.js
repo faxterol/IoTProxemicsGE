@@ -22,10 +22,6 @@ var config = {
             connectTimeout: 60 * 60 * 1000
         }
     },
-    iotanget : {
-        server : "127.0.0.1",
-        port : 4021
-    },
     interaction_processing : [
         "DistanceProcessing",
         "LocationProcessing",

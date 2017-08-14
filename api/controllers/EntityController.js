@@ -3,7 +3,9 @@
 
 var mongoose = require('mongoose'),
   Entity = mongoose.model('Entity'),
-  _ = require("lodash");
+  _ = require("lodash"),
+  config = require('../../config'),
+  rp = require("request-promise");;
 
 exports.list_all_entities = function(req, res) {
   Entity.find({}, function(err, entities) {
@@ -25,10 +27,30 @@ exports.create_an_entity = function(req, res) {
     }
   });
 
+  
   var new_entity = new Entity(entity_data);
   new_entity.save(function(err, entity) {
     if (err)
       res.send(err);
+
+    rp({
+      method: 'POST',
+      uri: 'http://'+config.orion.server+':'+config.orion.port+'/v2/entities',
+      body: {
+          "id": entity_data.entity_id,
+          "type" : entity_data.entity_type
+      },
+      headers: {
+          "Content-type" : "application/json",
+          "Fiware-Service" : config.ProximiThings.service,
+          "Fiware-ServicePath" : entity_data.service_path,
+      },
+      json : true
+    })
+    .catch(function (err) {
+      console.log("Failed to create entity on OCB:" + err);
+      return entity_query;
+    });
     res.json(entity);
   });
 };
