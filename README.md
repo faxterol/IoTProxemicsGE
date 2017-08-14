@@ -43,11 +43,36 @@ Open your browser and enter to http://localhost:6253 to sure that ProximiThings 
 
 On ProximiThings root folder project, there is a config.js file with some parameters for configuration.
 
+..* ProximiThings: In this paremeter, you can configure ProximiThings-related service. 
+..* mongodb: MongoDB connection details
+..* orion: Connection details to Orion Context Broker. This is needle to create entities or send measurement data to OCB
+..* mqtt: MQTT broker connection
+..* interaction_processing: File names of lib/proxemics_interaction files to process proxemic interaction on ProximiThings. The order of processing is given with the order of array position. 0 index is the first file to execute. 
+
 ## API documentation   
 
 You can find ProximiThings Server API REST resources and documentation on https://faxterol.github.io/ProximiThings-Server/. 
 
-### Limitations
+### API REST Resources
+
+| Método | PATH                    | Descripción                                                                                                                            |
+|--------|-------------------------|----------------------------------------------------------------------------------------------------------------------------------------|
+| GET    | /v1/rules               |  Show proxemics interaction rules availables on ProximiThings for entities to process proxemics actions                   |
+| POST   | /v1/rules               |  Create a new proxemics interaction rule                                                                                        |
+| POST   | /v1/rules/{RuleID}      | Update a proxemics interaction rule                                                                                           |
+| DELETE | /v1/rules/{RuleID}      | Delete a proxemics interaction rule                                                                                             |
+| GET    | /v1/actions             | Show proxemics actions list available on ProximiThings.                                                                                            |
+| POST   | /v1/actions             | Create a new proxemics action                                                                                                                  |
+| POST   | /v1/actions/{ActionID}  | Update a proxemics action.                                                                    |
+| DELETE | /v1/actions/{ActionID}  | Delete a proxemics action.                                                                      |
+| GET    | /v1/entities            | Show a list of entities availables on ProximiThings                                                       |
+| POST   | /v1/entities            | Create a new entity on ProximiThings and OCB                                                             |
+| POST   | /v1/entities/{EntityID} | Update an entity ONLY on ProximiThings.                                                                |
+| DELETE | /v1/entities/{EntityID} | Delete an entity from ProximiThings                                                                |
+| GET    | /v1/proxemics-history   | Show a list of proxemics dimensions measurements in a timelist. |
+
+
+## Limitations
 
 - You need to update proxemics dimensions on Orion Context Broker on ProxemicsInteraction service
 - It does not have big data analysis
