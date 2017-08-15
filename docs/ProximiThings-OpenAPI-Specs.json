@@ -154,6 +154,34 @@
             "description": "OK"
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "Entities"
+        ],
+        "summary": "Delete an Entity",
+        "description": "",
+        "operationId": "deleteEntity",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "EntityId",
+            "in": "path",
+            "type": "string",
+            "description": "Entity ID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "ProxemicsAction not found"
+          }
+        }
       }
     },
     "/rules": {

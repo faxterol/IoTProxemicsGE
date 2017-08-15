@@ -35,7 +35,7 @@ exports.create_a_rule = function(req, res) {
 
 
 exports.read_a_rule = function(req, res) {
-  req.checkParams('RuleId', 'RuleId is required').notEmpty();
+  req.checkParams('RuleId', 'RuleId is required').isMongoId().notEmpty();
 
   req.getValidationResult().then(function(result) {
     if (!result.isEmpty()) {
@@ -51,12 +51,12 @@ exports.read_a_rule = function(req, res) {
       res.json(rule);
     });
   });
-
-  
 };
 
 
 exports.update_a_rule = function(req, res) {
+  req.checkParams('RuleId', 'RuleId is required').isMongoId().notEmpty();
+
   RuleInteraction.findOneAndUpdate(req.params.RuleId, req.body, {new: true}, function(err, rule) {
     if (err){
         var errors = {"errors" : true, "msg" : err}
@@ -68,7 +68,7 @@ exports.update_a_rule = function(req, res) {
 
 
 exports.delete_a_rule = function(req, res) {
-  req.checkParams('RuleId', 'RuleId is required').notEmpty();
+  req.checkParams('RuleId', 'RuleId is required').isMongoId().notEmpty();
 
   req.getValidationResult().then(function(result) {
     if (!result.isEmpty()) {
